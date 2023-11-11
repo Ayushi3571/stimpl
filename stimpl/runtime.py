@@ -79,10 +79,10 @@ def evaluate(expression: Expr, state: State) -> Tuple[Optional[Any], Type, State
             return (printable_value, printable_type, new_state)
 
         case Sequence(exprs=exprs) | Program(exprs=exprs):
-            #make new state
-            #for x in expers
-            #return (variable_value, variable_type, state)
-            pass
+            for any in exprs:
+                value_result, value_type, new_state = evaluate(any, state)
+             
+            return (variable_value, variable_type, state)
 
         case Variable(variable_name=variable_name):
             value = state.get_value(variable_name)
@@ -223,12 +223,12 @@ def evaluate(expression: Expr, state: State) -> Tuple[Optional[Any], Type, State
 
         case If(condition=condition, true=true, false=false):
             # evaluate condition:
-            result_value, result_type, result_state = evaluate(condition, new_state) 
+            result_value, result_type, result_state = evaluate(condition, state) 
             # execute 
             if (result_value == True):
-                return_value, return_type, return_state = evaluate(true,new_state) 
+                return_value, return_type, return_state = evaluate(true, result_state) 
             else:
-                return_value, return_type, return_state = evaluate(false,new_state)
+                return_value, return_type, return_state = evaluate(false,result_state)
             return(return_value, return_type, return_state)
 
         case Lt(left=left, right=right):
@@ -266,7 +266,7 @@ def evaluate(expression: Expr, state: State) -> Tuple[Optional[Any], Type, State
                 case Integer() | Boolean() | String() | FloatingPoint():
                     result = left_value <= right_value
                 case Unit():
-                    result = False
+                    result = True
                 case _:
                     raise InterpTypeError(
                         f"Cannot perform <= on {left_type} type.")
@@ -308,7 +308,7 @@ def evaluate(expression: Expr, state: State) -> Tuple[Optional[Any], Type, State
                 case Integer() | Boolean() | String() | FloatingPoint():
                     result = left_value >= right_value
                 case Unit():
-                    result = False
+                    result = True
                 case _:
                     raise InterpTypeError(
                         f"Cannot perform >= on {left_type} type.")
@@ -327,9 +327,9 @@ def evaluate(expression: Expr, state: State) -> Tuple[Optional[Any], Type, State
 
             match left_type:
                 case Integer() | Boolean() | String() | FloatingPoint():
-                    result = left_value == right_value
+                    result = (left_value == right_value)
                 case Unit():
-                    result = False
+                    result = True
                 case _:
                     raise InterpTypeError(
                         f"Cannot perform = on {left_type} type.")
@@ -348,7 +348,7 @@ def evaluate(expression: Expr, state: State) -> Tuple[Optional[Any], Type, State
 
             match left_type:
                 case Integer() | Boolean() | String() | FloatingPoint():
-                    result = left_value != right_value
+                    result = (left_value != right_value)
                 case Unit():
                     result = False
                 case _:
@@ -359,7 +359,7 @@ def evaluate(expression: Expr, state: State) -> Tuple[Optional[Any], Type, State
 
         case While(condition=condition, body=body):
             # evaluate condition:
-            result_value, result_type, result_state = evaluate(condition, new_state) 
+            result_value, result_type, result_state = evaluate(condition, state) 
             # execute 
             while (result_value == True):
                 return_value, return_type, return_state = evaluate(body, new_state) 
