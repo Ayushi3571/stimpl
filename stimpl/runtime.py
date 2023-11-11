@@ -52,7 +52,7 @@ Main evaluation logic!
 def evaluate(expression: Expr, state: State) -> Tuple[Optional[Any], Type, State]:
     match expression:
         case Ren():
-            return (None, Unit(), state)
+            return (0, Unit(), state)
 
         case IntLiteral(literal=l):
             return (l, Integer(), state)
@@ -135,7 +135,7 @@ def evaluate(expression: Expr, state: State) -> Tuple[Optional[Any], Type, State
             Cannot subtract {left_type} to {right_type}""")
 
             match left_type:
-                case Integer() | String() | FloatingPoint():
+                case Integer() | FloatingPoint():
                     result = left_result - right_result
                 case _:
                     raise InterpTypeError(f"""Cannot subtract {left_type}s""")
@@ -152,7 +152,7 @@ def evaluate(expression: Expr, state: State) -> Tuple[Optional[Any], Type, State
             Cannot multiply {left_type} to {right_type}""")
 
             match left_type:
-                case Integer() | String() | FloatingPoint():
+                case Integer() | FloatingPoint():
                     result = left_result * right_result
                 case _:
                     raise InterpTypeError(f"""Cannot multiply {left_type}s""")
@@ -169,7 +169,7 @@ def evaluate(expression: Expr, state: State) -> Tuple[Optional[Any], Type, State
             Cannot divide {left_type} to {right_type}""")
 
             match left_type:
-                case Integer() | String() | FloatingPoint():
+                case Integer() | FloatingPoint():
                     result = left_result / right_result
                 case _:
                     raise InterpTypeError(f"""Cannot divide {left_type}s""")
