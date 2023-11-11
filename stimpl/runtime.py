@@ -221,12 +221,13 @@ def evaluate(expression: Expr, state: State) -> Tuple[Optional[Any], Type, State
 
         case If(condition=condition, true=true, false=false):
             # evaluate condition:
-            result_value, result_type, result_state = evaluate(condition, new_state)
+            result_value, result_type, result_state = evaluate(condition, new_state) 
             # execute 
             if (result_value == True):
-                evaluate(true) 
+                return_value, return_type, return_state = evaluate(true) 
             else:
-                evaluate(false)
+                return_value, return_type, return_state = evaluate(false)
+            return(return_value, return_type, return_state)
 
         case Lt(left=left, right=right):
             left_value, left_type, new_state = evaluate(left, state)
