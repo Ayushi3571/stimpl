@@ -208,7 +208,7 @@ def evaluate(expression: Expr, state: State) -> Tuple[Optional[Any], Type, State
             return (result, left_type, new_state)
 
         case Not(expr=expr):
-            var_value, var_type, new_state = evaluate(expr, new_state)
+            var_value, var_type, new_state = evaluate(expr, state)
 
             if var_type != Boolean():
                 raise InterpTypeError(f"""Mismatched types for Not:
