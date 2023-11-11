@@ -1,8 +1,8 @@
 from typing import Any, Tuple, Optional
 
-from expression import *
-from types import *
-from errors import *
+from stimpl.expression import *
+from stimpl.types import *
+from stimpl.errors import *
 
 """
 Interpreter State
