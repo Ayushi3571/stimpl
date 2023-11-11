@@ -224,7 +224,7 @@ def evaluate(expression: Expr, state: State) -> Tuple[Optional[Any], Type, State
             result_value, result_type, result_state = evaluate(condition, new_state)
             # execute 
             if (result_value == True):
-                evauate(true) 
+                evaluate(true) 
             else:
                 evaluate(false)
 
@@ -250,24 +250,109 @@ def evaluate(expression: Expr, state: State) -> Tuple[Optional[Any], Type, State
             return (result, Boolean(), new_state)
 
         case Lte(left=left, right=right):
-            """ TODO: Implement. """
-            pass
+            left_value, left_type, new_state = evaluate(left, state)
+            right_value, right_type, new_state = evaluate(right, new_state)
+
+            result = None
+
+            if left_type != right_type:
+                raise InterpTypeError(f"""Mismatched types for Lt:
+            Cannot compare {left_type} and {right_type}""")
+
+            match left_type:
+                case Integer() | Boolean() | String() | FloatingPoint():
+                    result = left_value <= right_value
+                case Unit():
+                    result = False
+                case _:
+                    raise InterpTypeError(
+                        f"Cannot perform <= on {left_type} type.")
+
+            return (result, Boolean(), new_state)
 
         case Gt(left=left, right=right):
-            """ TODO: Implement. """
-            pass
+            left_value, left_type, new_state = evaluate(left, state)
+            right_value, right_type, new_state = evaluate(right, new_state)
+
+            result = None
+
+            if left_type != right_type:
+                raise InterpTypeError(f"""Mismatched types for Lt:
+            Cannot compare {left_type} and {right_type}""")
+
+            match left_type:
+                case Integer() | Boolean() | String() | FloatingPoint():
+                    result = left_value > right_value
+                case Unit():
+                    result = False
+                case _:
+                    raise InterpTypeError(
+                        f"Cannot perform > on {left_type} type.")
+
+            return (result, Boolean(), new_state)
 
         case Gte(left=left, right=right):
-            """ TODO: Implement. """
-            pass
+            left_value, left_type, new_state = evaluate(left, state)
+            right_value, right_type, new_state = evaluate(right, new_state)
+
+            result = None
+
+            if left_type != right_type:
+                raise InterpTypeError(f"""Mismatched types for Lt:
+            Cannot compare {left_type} and {right_type}""")
+
+            match left_type:
+                case Integer() | Boolean() | String() | FloatingPoint():
+                    result = left_value => right_value
+                case Unit():
+                    result = False
+                case _:
+                    raise InterpTypeError(
+                        f"Cannot perform => on {left_type} type.")
+
+            return (result, Boolean(), new_state)
 
         case Eq(left=left, right=right):
-            """ TODO: Implement. """
-            pass
+            left_value, left_type, new_state = evaluate(left, state)
+            right_value, right_type, new_state = evaluate(right, new_state)
+
+            result = None
+
+            if left_type != right_type:
+                raise InterpTypeError(f"""Mismatched types for Lt:
+            Cannot compare {left_type} and {right_type}""")
+
+            match left_type:
+                case Integer() | Boolean() | String() | FloatingPoint():
+                    result = left_value == right_value
+                case Unit():
+                    result = False
+                case _:
+                    raise InterpTypeError(
+                        f"Cannot perform = on {left_type} type.")
+
+            return (result, Boolean(), new_state)
 
         case Ne(left=left, right=right):
-            """ TODO: Implement. """
-            pass
+            left_value, left_type, new_state = evaluate(left, state)
+            right_value, right_type, new_state = evaluate(right, new_state)
+
+            result = None
+
+            if left_type != right_type:
+                raise InterpTypeError(f"""Mismatched types for Lt:
+            Cannot compare {left_type} and {right_type}""")
+
+            match left_type:
+                case Integer() | Boolean() | String() | FloatingPoint():
+                    result = left_value != right_value
+                case Unit():
+                    result = False
+                case _:
+                    raise InterpTypeError(
+                        f"Cannot perform != on {left_type} type.")
+
+            return (result, Boolean(), new_state)
 
         case While(condition=condition, body=body):
             """ TODO: Implement. """
