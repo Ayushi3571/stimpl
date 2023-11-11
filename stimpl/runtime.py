@@ -79,7 +79,7 @@ def evaluate(expression: Expr, state: State) -> Tuple[Optional[Any], Type, State
             return (printable_value, printable_type, new_state)
 
         case Sequence(exprs=exprs) | Program(exprs=exprs):
-            value_result, value_type, new_state = (None, unit(), None)
+            value_result, value_type, new_state = (None, Unit(), None)
             for any in exprs:
                 value_result, value_type, new_state = evaluate(any, state)
              
