@@ -52,7 +52,7 @@ Main evaluation logic!
 def evaluate(expression: Expr, state: State) -> Tuple[Optional[Any], Type, State]:
     match expression:
         case Ren():
-            return (0, Unit(), state)
+            return (None, Unit(), state)
 
         case IntLiteral(literal=l):
             return (l, Integer(), state)
