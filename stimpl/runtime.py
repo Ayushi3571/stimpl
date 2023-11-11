@@ -79,6 +79,7 @@ def evaluate(expression: Expr, state: State) -> Tuple[Optional[Any], Type, State
             return (printable_value, printable_type, new_state)
 
         case Sequence(exprs=exprs) | Program(exprs=exprs):
+            value_result, value_type, new_state = (None, unit(), None)
             for any in exprs:
                 value_result, value_type, new_state = evaluate(any, state)
              
@@ -359,8 +360,9 @@ def evaluate(expression: Expr, state: State) -> Tuple[Optional[Any], Type, State
 
         case While(condition=condition, body=body):
             # evaluate condition:
+            j = 0
             result_value, result_type, result_state = evaluate(condition, state) 
-            # execute 
+            # execute:
             while (result_value == True):
                 return_value, return_type, return_state = evaluate(body, new_state) 
                 result_value, result_type, result_state = evaluate(condition, new_state)
@@ -370,7 +372,6 @@ def evaluate(expression: Expr, state: State) -> Tuple[Optional[Any], Type, State
         case _:
             raise InterpSyntaxError("Unhandled!")
     pass
-
 
 def run_stimpl(program, debug=False):
     state = EmptyState()
