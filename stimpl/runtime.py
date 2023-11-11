@@ -81,7 +81,7 @@ def evaluate(expression: Expr, state: State) -> Tuple[Optional[Any], Type, State
         case Sequence(exprs=exprs) | Program(exprs=exprs):
             value_result, value_type, new_state = None, Unit(), None
             for any in exprs:
-                value_result, value_type, new_state = evaluate(any, state) 
+                value_result, value_type, new_state = evaluate(any, new_state) 
             return (variable_value, variable_type, new_state)
 
         case Variable(variable_name=variable_name):
