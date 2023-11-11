@@ -224,9 +224,9 @@ def evaluate(expression: Expr, state: State) -> Tuple[Optional[Any], Type, State
             result_value, result_type, result_state = evaluate(condition, new_state) 
             # execute 
             if (result_value == True):
-                return_value, return_type, return_state = evaluate(true) 
+                return_value, return_type, return_state = evaluate(true,new_state) 
             else:
-                return_value, return_type, return_state = evaluate(false)
+                return_value, return_type, return_state = evaluate(false,new_state)
             return(return_value, return_type, return_state)
 
         case Lt(left=left, right=right):
@@ -356,8 +356,14 @@ def evaluate(expression: Expr, state: State) -> Tuple[Optional[Any], Type, State
             return (result, Boolean(), new_state)
 
         case While(condition=condition, body=body):
-            """ TODO: Implement. """
-            pass
+            # evaluate condition:
+            result_value, result_type, result_state = evaluate(condition, new_state) 
+            # execute 
+            while (result_value == True):
+                return_value, return_type, return_state = evaluate(body, new_state) 
+                result_value, result_type, result_state = evaluate(condition, new_state)
+            
+            return(return_value, return_type, return_state)
 
         case _:
             raise InterpSyntaxError("Unhandled!")
