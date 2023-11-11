@@ -308,7 +308,7 @@ def evaluate(expression: Expr, state: State) -> Tuple[Optional[Any], Type, State
                     result = False
                 case _:
                     raise InterpTypeError(
-                        f"Cannot perform => on {left_type} type.")
+                        f"Cannot perform >= on {left_type} type.")
 
             return (result, Boolean(), new_state)
 
