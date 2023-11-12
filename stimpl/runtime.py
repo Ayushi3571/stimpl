@@ -23,8 +23,11 @@ class State(object):
         return State(variable_name, variable_value, variable_type, self)
 
     def get_value(self, variable_name) -> Any:
+        # Checking if this variable is what we are looking for
         if self.variable_name == variable_name:
             return (self.value)
+
+        # Calling get_value on the next state to continue searching
         elif self.next_state is not None:
             return self.next_state.get_value(variable_name)
         else:
@@ -83,7 +86,10 @@ def evaluate(expression: Expr, state: State) -> Tuple[Optional[Any], Type, State
             return (printable_value, printable_type, new_state)
 
         case Sequence(exprs=exprs) | Program(exprs=exprs):
+            #Creating a new State
             value_result, value_type, new_state = None, Unit(), None
+
+            #Running each expresion
             for any in exprs:
                 value_result, value_type, new_state = evaluate(any, state) 
                 state = new_state 
@@ -174,8 +180,12 @@ def evaluate(expression: Expr, state: State) -> Tuple[Optional[Any], Type, State
             Cannot divide {left_type} to {right_type}""")
 
             match left_type:
+            
+                #Use // for integer division
                 case Integer():
                     result = left_result // right_result
+
+                # Use / for floating point division
                 case FloatingPoint():
                     result = left_result / right_result
                 case _:
@@ -231,10 +241,11 @@ def evaluate(expression: Expr, state: State) -> Tuple[Optional[Any], Type, State
         case If(condition=condition, true=true, false=false):
             # evaluate condition:
             result_value, result_type, result_state = evaluate(condition, state) 
-            # execute 
+            # Chech if experession is a boolean value 
             if (result_type != Boolean()):
                 raise InterpTypeError(
                     "Cannot perform logical and on non-boolean operands.")
+            #execute
             else:    
                 if (result_value == True):
                     return_value, return_type, result_state = evaluate(true, result_state) 
