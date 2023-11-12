@@ -364,14 +364,13 @@ def evaluate(expression: Expr, state: State) -> Tuple[Optional[Any], Type, State
 
         case While(condition=condition, body=body):
             # evaluate condition:
-            j = 0
             result_value, result_type, result_state = evaluate(condition, state) 
             # execute:
             while (result_value == True):
-                return_value, return_type, return_state = evaluate(body, new_state) 
-                result_value, result_type, result_state = evaluate(condition, new_state)
+                return_value, return_type, result_state = evaluate(body, result_state) 
+                result_value, result_type, result_state = evaluate(condition, result_state)
             
-            return(return_value, return_type, return_state)
+            return(return_value, return_type, result_state)
 
         case _:
             raise InterpSyntaxError("Unhandled!")
