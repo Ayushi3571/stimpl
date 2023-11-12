@@ -232,8 +232,11 @@ def evaluate(expression: Expr, state: State) -> Tuple[Optional[Any], Type, State
             # execute 
             if (result_value == True):
                 return_value, return_type, result_state = evaluate(true, result_state) 
-            else:
+            elif (result_value == False):
                 return_value, return_type, result_state = evaluate(false,result_state)
+            else:
+                raise InterpTypeError(
+                        "Cannot perform logical and on non-boolean operands.")
             return(return_value, return_type, result_state)
 
         case Lt(left=left, right=right):
