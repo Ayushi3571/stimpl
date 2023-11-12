@@ -23,9 +23,12 @@ class State(object):
         return State(variable_name, variable_value, variable_type, self)
 
     def get_value(self, variable_name) -> Any:
-        self.variable_value = variable_value, 
-        self.variable_type = variable_type
-        return (variable_value, variable_type)
+        if self.variable_name == variable_name:
+            return (self.value, self.type)
+        elif self.next_state is not None:
+            return self.next_state.get_value(variable_name)
+        else:
+            raise ValueError(f"Variable '{variable_name}' not found")        
 
     def __repr__(self) -> str:
         return f"{self.variable_name}: {self.value}, " + repr(self.next_state)
