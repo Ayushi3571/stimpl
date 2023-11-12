@@ -23,7 +23,7 @@ class State(object):
         return State(variable_name, variable_value, variable_type, self)
 
     def get_value(self, variable_name) -> Any:
-        """ TODO: Implement. """
+        return State(variable_value, variable_type)
         return None
 
     def __repr__(self) -> str:
