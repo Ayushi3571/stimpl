@@ -232,7 +232,7 @@ def evaluate(expression: Expr, state: State) -> Tuple[Optional[Any], Type, State
             # evaluate condition:
             result_value, result_type, result_state = evaluate(condition, state) 
             # execute 
-            if (result_type != boolean()):
+            if (result_type != Boolean()):
                 raise InterpTypeError(
                     "Cannot perform logical and on non-boolean operands.")
             else:    
