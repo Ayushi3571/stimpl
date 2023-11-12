@@ -174,7 +174,9 @@ def evaluate(expression: Expr, state: State) -> Tuple[Optional[Any], Type, State
             Cannot divide {left_type} to {right_type}""")
 
             match left_type:
-                case Integer() | FloatingPoint():
+                case Integer():
+                    result = left_result // right_result
+                case FloatingPoint():
                     result = left_result / right_result
                 case _:
                     raise InterpTypeError(f"""Cannot divide {left_type}s""")
@@ -230,14 +232,17 @@ def evaluate(expression: Expr, state: State) -> Tuple[Optional[Any], Type, State
             # evaluate condition:
             result_value, result_type, result_state = evaluate(condition, state) 
             # execute 
-            if (result_value == True):
-                return_value, return_type, result_state = evaluate(true, result_state) 
-            elif (result_value == False):
-                return_value, return_type, result_state = evaluate(false,result_state)
-            else:
+            if (result_type != boolean()):
                 raise InterpTypeError(
-                        "Cannot perform logical and on non-boolean operands.")
-            return(return_value, return_type, result_state)
+                    "Cannot perform logical and on non-boolean operands.")
+            else:    
+                if (result_value == True):
+                    return_value, return_type, result_state = evaluate(true, result_state) 
+                elif (result_value == False):
+                    return_value, return_type, result_state = evaluate(false,result_state)
+                
+                return(return_value, return_type, result_state)
+            
 
         case Lt(left=left, right=right):
             left_value, left_type, new_state = evaluate(left, state)
