@@ -24,7 +24,7 @@ class State(object):
 
     def get_value(self, variable_name) -> Any:
         if self.variable_name == variable_name:
-            return (self.value, self.type)
+            return (self.value)
         elif self.next_state is not None:
             return self.next_state.get_value(variable_name)
         else:
