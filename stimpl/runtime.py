@@ -23,8 +23,9 @@ class State(object):
         return State(variable_name, variable_value, variable_type, self)
 
     def get_value(self, variable_name) -> Any:
-        return State(variable_value, variable_type)
-        return None
+        self.variable_value = variable_value, 
+        self.variable_type = variable_type
+        return (variable_value, variable_type)
 
     def __repr__(self) -> str:
         return f"{self.variable_name}: {self.value}, " + repr(self.next_state)
